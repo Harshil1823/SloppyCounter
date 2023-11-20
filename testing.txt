@@ -1,0 +1,105 @@
+## Test 1: Small Number of Threads 
+command: make
+time ./sloppySim 4 5 11 100 false true
+
+Expectation: number of threads are relatively low, and work is I/O bound,
+the threads should complete the work quickly. Overall execution
+time should be reasonable. 
+
+below is the output of my program. 
+
+Simulation Parameters:
+#threads = 4
+sloppiness = 5
+work time = 11
+work iterations = 100
+CPU bound = (false)
+Do logging = (true)
+Global Ct = 60Locals [15,15,15,15]
+Global Ct = 120Locals [30,30,30,30]
+Global Ct = 180Locals [45,45,45,45]
+Global Ct = 235Locals [60,60,55,60]
+Global Ct = 295Locals [75,75,70,75]
+Global Ct = 345Locals [85,85,85,90]
+Global Ct = 400Locals [100,100,100,100]
+Final Local Buckets: 100 100 100 100
+Final Global Counter: 400
+./sloppySim 4 5 11 100 false true  0.00s user 0.01s system 1% cpu 1.142 total
+
+
+## Test 2: Small number of threads and CPU/bound
+command: make
+time ./sloppySim 4 5 11 100 true true
+
+Expectation: I am expecting this to run quite faster than I/O bound
+from compared to test case 1. This will use the CPU and get the work
+done quicker. 
+
+below is my output for the program. 
+Simulation Parameters:
+#threads = 4
+sloppiness = 5
+work time = 11
+work iterations = 100
+CPU bound = (true)
+Do logging = (true)
+Global Ct = 400Locals [100,100,100,100]
+Final Local Buckets: 100 100 100 100
+Final Global Counter: 400
+./sloppySim 4 5 11 100 true true  0.01s user 0.00s system 14% cpu 0.117 total
+
+
+## Test 3: Large number of threads and IO bound 
+command: make
+time ./sloppySim 30 5 11 100 false true
+
+Expectation: it should scale accordingly. I belive that it will take quite
+some time to get done. But, still something managable and should be able to 
+finish. 
+
+below is my output for the program. 
+Simulation Parameters:
+#threads = 30
+sloppiness = 5
+work time = 11
+work iterations = 100
+CPU bound = (false)
+Do logging = (true)
+Global Ct = 455Locals [15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,20,15,15,15,15,15,15,15,15,15,15,15]
+Global Ct = 900Locals [30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30]
+Global Ct = 1345Locals [45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,40,45,45,45,45,45,45,45]
+Global Ct = 1765Locals [55,60,55,60,60,60,60,60,60,55,55,60,60,60,60,60,60,60,60,60,60,60,55,60,55,60,55,60,60,60]
+Global Ct = 2185Locals [70,75,70,70,70,70,75,75,75,70,70,75,75,75,70,75,75,75,75,75,70,75,70,75,70,70,70,75,75,75]
+Global Ct = 2610Locals [85,90,85,85,85,85,85,90,90,85,85,90,90,90,85,90,90,90,90,90,85,90,85,85,85,85,85,85,85,85]
+Global Ct = 3000Locals [100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100]
+Final Local Buckets: 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100
+Final Global Counter: 3000
+./sloppySim 30 5 11 100 false true  0.01s user 0.03s system 5% cpu 0.819 total
+
+
+## Test 4: Large number of threads and CPU bound
+command: make
+time ./sloppySim 30 5 11 100 true true
+
+Expectation: I feel here CPU bound comes into play. This program will finish quite
+quicker than I/O bound here. And should scale really well. 
+
+below is my output for the code.
+Simulation Parameters:
+#threads = 30
+sloppiness = 5
+work time = 11
+work iterations = 100
+CPU bound = (true)
+Do logging = (true)
+Global Ct = 3000Locals [100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100]
+Final Local Buckets: 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100
+Final Global Counter: 3000
+./sloppySim 30 5 11 100 true true  0.12s user 0.00s system 89% cpu 0.134 total
+
+
+I am not testing Do_logging it's pretty self explanatory. It will work
+like it's supposed to. 
+
+NOTE: Even if it's false it will still print the local buckers and the
+global counter. Just to make sure everything is good and working fine.
